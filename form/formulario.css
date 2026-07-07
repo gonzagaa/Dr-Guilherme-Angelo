@@ -27,8 +27,8 @@
 .form-container {
   position: relative;
   background: #fff;
-  padding: 3rem;
-  border-radius: 2.5rem;
+  padding: 30px;
+  border-radius: 25px;
   width: 90%;
   max-width: 400px;
   z-index: 1;
@@ -49,26 +49,26 @@
   align-items: center;
   justify-content: space-between;
   flex-direction: row;
-  margin-bottom: 2rem;
+  margin-bottom: 20px;
 }
 
 .form-container h2 {
   text-align: left;
-  font-size: 2rem;
+  font-size: 20px;
 }
 
 .form-fechar {
-  font-size: 3rem;
+  font-size: 30px;
   color: #000;
   background: #00000031;
   border-radius: 100%;
   cursor: pointer;
   font-weight: 400;
   line-height: 1;
-  width: 3rem;
-  height: 3rem;
-  max-width: 3rem;
-  max-height: 3rem;
+  width: 30px;
+  height: 30px;
+  max-width: 30px;
+  max-height: 30px;
   transition: all 300ms ease-in-out;
 }
 
@@ -83,11 +83,11 @@ div.button {
 .form-container input {
   display: block;
   width: 100%;
-  margin-bottom: 1rem;
-  padding: 1.5rem;
-  font-size: 1.6rem;
+  margin-bottom: 10px;
+  padding: 15px;
+  font-size: 16px;
   border: 1px solid #ccc;
-  border-radius: 1rem;
+  border-radius: 10px;
 }
 
 .form-container input:focus {
@@ -97,7 +97,7 @@ div.button {
 
 .form-container .button {
   display: block;
-  margin-top: 2rem;
+  margin-top: 20px;
 }
 
 .form-container .button:hover {
@@ -107,14 +107,14 @@ div.button {
 .form-container button.whatsapp-submit {
   width: 100%;
   border: none;
-  border-radius: 2rem;
-  padding: 1.4rem 2rem;
+  border-radius: 20px;
+  padding: 14px 20px;
   cursor: pointer;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1.2rem;
+  gap: 12px;
 
   color: #fff;
   background: linear-gradient(135deg, #25D366 0%, #20c75a 45%, #128C4A 100%);
@@ -134,16 +134,16 @@ div.button {
 }
 
 .wa-btn-text {
-  font-size: 1.7rem;
+  font-size: 17px;
   font-weight: 700;
   line-height: 1;
   color: #fff;
 }
 
 .wa-btn-icon {
-  width: 4.2rem;
-  height: 4.2rem;
-  min-width: 4.2rem;
+  width: 42px;
+  height: 42px;
+  min-width: 42px;
   border-radius: 999px;
 
   display: flex;
@@ -161,29 +161,29 @@ div.button {
 }
 
 .wa-icon {
-  width: 2rem;
-  height: 2rem;
+  width: 20px;
+  height: 20px;
   display: block;
 }
 
 @media (max-width: 480px) {
   .form-container button.whatsapp-submit {
-    padding: 1.5rem 1.6rem;
+    padding: 15px 16px;
   }
 
   .wa-btn-text {
-    font-size: 1.55rem;
+    font-size: 15.5px;
   }
 
   .wa-btn-icon {
-    width: 4rem;
-    height: 4rem;
-    min-width: 4rem;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
   }
 
   .wa-icon {
-    width: 1.9rem;
-    height: 1.9rem;
+    width: 19px;
+    height: 19px;
   }
 }
 
@@ -198,7 +198,7 @@ div.button {
 }
 
 .form-modal.black .form-fechar {
-  font-size: 3rem;
+  font-size: 30px;
   color: #fff;
   background: #ffffff31;
 }
@@ -211,7 +211,7 @@ div.button {
 
 @media (min-width: 1080px) {
   .form-container {
-    padding: 4rem;
+    padding: 40px;
     max-width: 450px;
   }
 
