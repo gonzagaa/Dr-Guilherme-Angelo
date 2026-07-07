@@ -519,6 +519,9 @@ a { color: inherit; }
 
 .carousel {
   margin-top: clamp(2rem, 4vw, var(--sp-5));
+  max-width: 1400px;                     /* trilho mais largo que o bloco de texto */
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 4vw, 3rem);
   display: grid;
   align-items: center;
   /* mobile: trilho em cima, controles (setas + dots) embaixo, centralizados */
@@ -533,55 +536,55 @@ a { color: inherit; }
 /* trilho com scroll-snap */
 .carousel__track {
   grid-area: track;
+  position: relative;
+  z-index: 1;                            /* fica ABAIXO das setas */
   list-style: none;
   margin: 0;
-  padding: 6px 0;                       /* respiro p/ sombra */
+  padding: 6px 4px;
   display: flex;
-  gap: clamp(0.75rem, 2vw, 1.25rem);
+  align-items: stretch;                  /* cards com a mesma altura */
+  gap: clamp(0.85rem, 1.6vw, 1.35rem);
   overflow-x: auto;
   overscroll-behavior-x: contain;
   scroll-snap-type: x mandatory;
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
   cursor: grab;
-  /* esconder scrollbar */
-  scrollbar-width: none;                /* Firefox */
-  -ms-overflow-style: none;             /* IE/Edge antigo */
+  scrollbar-width: none;                 /* Firefox */
+  -ms-overflow-style: none;              /* IE/Edge antigo */
 }
 .carousel__track::-webkit-scrollbar { display: none; }   /* WebKit */
+.carousel__track.is-dragging { scroll-snap-type: none; cursor: grabbing; }
 .carousel__track:focus-visible {
   outline: 2px solid var(--gold);
   outline-offset: 4px;
   border-radius: var(--radius);
 }
 
-/* mobile: trilho ocupa a largura toda (peek nas bordas da tela) */
-@media (max-width: 767px) {
-  .carousel__track {
-    margin-inline: calc(-1 * var(--pad-x));
-    padding-inline: var(--pad-x);
-    scroll-padding-inline: var(--pad-x);
-  }
-}
-
 .carousel__card {
-  flex: 0 0 clamp(280px, 80vw, 360px);
+  flex: 0 0 clamp(300px, 82vw, 380px);
   scroll-snap-align: center;
+  align-self: start;                     /* não estica o card além da imagem */
   margin: 0;
-  background: var(--navy);
-  border: 1px solid var(--gold-40);
+  background: var(--white);              /* fundo neutro */
+  border: 1px solid var(--gold-40);      /* borda fina dourada sutil */
   border-radius: var(--radius);
   overflow: hidden;
-  box-shadow: 0 12px 26px -18px rgba(40, 46, 60, 0.55);
+  box-shadow: 0 8px 20px -16px rgba(40, 46, 60, 0.45); /* sombra levíssima */
 }
+/* preserva SEMPRE a proporção original do print (mesma largura + altura automática
+   => todos os cards ficam com a mesma altura, sem cortar nada) */
 .carousel__card img {
   display: block;
   width: 100%;
-  height: auto;                          /* respeita a altura natural do print */
+  height: auto;
 }
 
 /* setas prev/next — círculo minimalista, navy sobre paper, hover dourado */
 .carousel__arrow {
+  position: relative;
+  z-index: 2;                            /* ACIMA do trilho */
+  pointer-events: auto;
   width: 46px;
   height: 46px;
   padding: 0;
@@ -605,10 +608,14 @@ a { color: inherit; }
   transform: translateY(-1px);
 }
 .carousel__arrow:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
-.carousel__arrow:disabled { opacity: 0.32; cursor: default; transform: none; }
-.carousel__arrow:disabled:hover { background: var(--paper); color: var(--navy); border-color: var(--navy-12); }
+.carousel__arrow:disabled {
+  opacity: 0.3;
+  cursor: default;
+  transform: none;
+  pointer-events: none;                  /* desabilitada não rouba clique */
+}
 
-/* dots finos em dourado */
+/* dots finos em dourado, centralizados */
 .carousel__dots {
   grid-area: dots;
   display: flex;
@@ -616,7 +623,6 @@ a { color: inherit; }
   align-items: center;
   gap: 0.5rem;
   flex-wrap: wrap;
-  max-width: 60vw;
 }
 .carousel__dot {
   width: 8px;
@@ -639,7 +645,7 @@ a { color: inherit; }
     grid-template-areas:
       "prev track next"
       ".    dots  .";
-    column-gap: clamp(0.5rem, 2vw, 1.25rem);
+    column-gap: clamp(0.6rem, 1.5vw, 1.4rem);
     row-gap: 1.4rem;
   }
 }
