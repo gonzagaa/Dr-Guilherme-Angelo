@@ -1,0 +1,704 @@
+/* ============================================================
+   Dr. Guilherme Ângelo · LP Endometriose
+   ============================================================ */
+
+:root {
+  --navy: #282E3C;
+  --gold: #D9AF89;
+  --paper: #F4F4F4;
+
+  /* derivados permitidos */
+  --navy-90: rgba(40, 46, 60, 0.90);
+  --navy-70: rgba(40, 46, 60, 0.70);
+  --navy-12: rgba(40, 46, 60, 0.12);
+  --navy-08: rgba(40, 46, 60, 0.08);
+  --paper-70: rgba(244, 244, 244, 0.70);
+  --paper-55: rgba(244, 244, 244, 0.55);
+  --gold-40: rgba(217, 175, 137, 0.40);
+  --gold-20: rgba(217, 175, 137, 0.20);
+  --white: #ffffff;
+
+  /* extremos derivados das MESMAS matizes (âncoras da marca ficam no meio) */
+  --navy-deep: #12182c;   /* sombra: navy mais escuro e saturado */
+  --navy-glow: #2b3a5e;   /* luz: navy mais claro e saturado */
+  --gold-light: #ecd4a6;  /* champagne claro */
+  --gold-deep: #b8863f;   /* âmbar/bronze profundo */
+
+  /* gradientes multi-stop — base da marca sempre no meio */
+  --grad-navy: linear-gradient(142deg,
+      var(--navy-deep) 0%,
+      var(--navy) 52%,
+      var(--navy-glow) 100%);
+  --grad-gold: linear-gradient(135deg,
+      var(--gold-light) 0%,
+      var(--gold) 46%,
+      var(--gold-deep) 100%);
+  --glow-navy: radial-gradient(58% 52% at 22% 26%,
+      rgba(43, 58, 94, 0.55) 0%,
+      rgba(43, 58, 94, 0) 68%);
+
+  /* escala de espaçamento */
+  --sp-1: 0.5rem;
+  --sp-2: 0.875rem;
+  --sp-3: 1.25rem;
+  --sp-4: 2rem;
+  --sp-5: 3rem;
+  --sp-6: 4.5rem;
+  --sp-7: 7rem;
+
+  --container: 1240px;
+  --pad-x: clamp(1.25rem, 5vw, 3rem);
+  --radius: 6px;
+
+  --font-head: "Archivo", system-ui, sans-serif;
+  --font-body: "Instrument Sans", system-ui, sans-serif;
+  --font-quote: "Fraunces", Georgia, serif;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--navy);
+  background: var(--paper);
+  line-height: 1.6;
+  font-size: clamp(1rem, 0.96rem + 0.2vw, 1.0625rem);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img { display: block; max-width: 100%; }
+
+a { color: inherit; }
+
+/* ---------- primitivos ---------- */
+
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--pad-x);
+}
+
+.section {
+  padding-block: clamp(3.5rem, 7vw, var(--sp-7));
+}
+
+.section--paper { background: var(--paper); color: var(--navy); }
+.section--navy  {
+  background: var(--grad-navy);
+  color: var(--paper);
+  position: relative;
+  overflow: hidden;
+}
+/* glow radial sutil — mesma fonte de luz da hero (canto superior esquerdo) */
+.section--navy::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--glow-navy);
+  pointer-events: none;
+  z-index: 0;
+}
+.section--navy > .container { position: relative; z-index: 1; }
+
+.eyebrow {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 0.8125rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 0 0 var(--sp-2);
+}
+
+.section__title {
+  font-family: var(--font-head);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.08;
+  font-size: clamp(1.9rem, 1.2rem + 3vw, 3.25rem);
+  margin: 0 0 var(--sp-3);
+  max-width: 20ch;
+}
+
+.section__lead {
+  font-size: clamp(1.05rem, 1rem + 0.35vw, 1.25rem);
+  max-width: 62ch;
+  margin: 0 0 var(--sp-4);
+}
+
+.section--navy .section__lead { color: var(--paper-70); }
+
+.accent { color: var(--gold); }
+
+/* ---------- botões ---------- */
+
+.btn {
+  display: inline-block;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 1.0625rem;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  padding: 0.95rem 1.75rem;
+  border-radius: var(--radius);
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
+  will-change: transform;
+}
+
+.btn--gold {
+  background: var(--grad-gold);
+  color: var(--navy);
+  box-shadow: 0 8px 22px -12px rgba(40, 46, 60, 0.55);
+}
+
+.btn--gold:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.06);
+  box-shadow: 0 14px 30px -14px rgba(40, 46, 60, 0.6);
+}
+
+.btn:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
+}
+
+.section--navy .btn:focus-visible { outline-color: var(--paper); }
+
+/* ---------- avisos discretos ---------- */
+
+.notice {
+  margin-top: var(--sp-3);
+  font-size: 0.875rem;
+  color: var(--navy-70);
+}
+.notice p { margin: 0.15rem 0; }
+.notice--light { color: var(--paper-55); }
+/* hero tem fundo escuro (imagem/navy): avisos precisam de texto claro */
+.hero .notice { color: var(--paper-55); }
+
+/* ============================================================
+   HERO
+   ============================================================ */
+
+.hero {
+  position: relative;
+  min-height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  background: var(--navy);           /* fallback atrás da imagem */
+  color: var(--paper);
+}
+
+/* imagem full-bleed: cobre 100% da largura e da altura da hero, atrás de tudo */
+.hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.hero__media picture { display: block; width: 100%; height: 100%; }
+.hero__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;          /* mobile: centralizado */
+}
+
+/* detalhe sutil de marca: fina borda dourada na base — nunca fura a imagem */
+.hero::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: var(--grad-gold);
+  z-index: 3;
+}
+
+.hero__content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding: clamp(3rem, 8vw, 5rem) var(--pad-x);
+}
+
+.hero__inner {
+  width: 100%;
+  max-width: 600px;
+}
+
+.hero__logo {
+  display: inline-block;
+  margin-bottom: clamp(1.5rem, 4vw, 2.75rem);
+}
+.hero__logo img { height: clamp(76px, 6.5vw, 104px); width: auto; }
+
+.hero__title {
+  font-family: var(--font-head);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+  font-size: clamp(2.3rem, 1.3rem + 4.4vw, 3.9rem);
+  margin: 0 0 var(--sp-3);
+}
+/* destaque com brilho dourado (gradient text) — apenas sobre fundo navy,
+   onde o contraste do champagne é seguro; na dobra clara segue sólido */
+.hero__title .accent,
+.section--navy .accent {
+  background: var(--grad-gold);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.hero__lead {
+  color: var(--paper-70);
+  font-size: clamp(0.84rem, 0.81rem + 0.25vw, 0.92rem);
+  max-width: 54ch;
+  margin: 0 0 var(--sp-4);
+}
+
+/* barra de credibilidade */
+.cred {
+  list-style: none;
+  margin: 0 0 var(--sp-4);
+  padding: var(--sp-3) 0;
+  border-top: 1px solid var(--gold-40);
+  border-bottom: 1px solid var(--gold-40);
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3) 0;
+}
+.cred__item {
+  flex: 1 1 0;
+  padding-inline: clamp(0.75rem, 2vw, 1.5rem);
+  min-width: 120px;
+}
+.cred__item:first-child { padding-left: 0; }
+.cred__item + .cred__item { border-left: 1px solid var(--gold-40); }
+
+/* mobile: mantém as 3 colunas lado a lado, com divisórias douradas e fontes menores */
+@media (max-width: 520px) {
+  .cred { flex-wrap: nowrap; gap: 0; padding-block: 0.85rem; }
+  .cred__item { min-width: 0; padding-inline: clamp(0.4rem, 2.6vw, 0.8rem); }
+  .cred__item:first-child { padding-left: 0; }
+  .cred__num { font-size: clamp(0.82rem, 3.9vw, 1.05rem); }
+  .cred__desc { font-size: 0.54rem; line-height: 1.25; margin-top: 0.15rem; }
+}
+.cred__num {
+  display: block;
+  font-family: var(--font-head);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  font-size: clamp(1.15rem, 0.95rem + 0.9vw, 1.55rem);
+  color: var(--gold);
+  line-height: 1.1;
+}
+.cred__desc {
+  display: block;
+  font-size: 0.72rem;
+  color: var(--paper-70);
+  margin-top: 0.25rem;
+}
+
+/* Desktop: rosto à direita, texto à esquerda */
+@media (min-width: 768px) {
+  .hero__media img { object-position: right center; }
+}
+
+/* ---------- MOBILE: full-bleed (imagem atrás), logo no topo, texto na base ---------- */
+@media (max-width: 767px) {
+  /* hero mais alta: mais espaço p/ a imagem; texto continua ancorado na base */
+  .hero { align-items: stretch; min-height: 120dvh; }
+
+  /* imagem 9:16 cobre toda a hero, rosto no topo */
+  .hero__media img { object-position: top center; }
+
+  /* scrim: topo transparente (rosto limpo) -> navy opaco na base (texto legível) */
+  .hero__media::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(180deg,
+        rgba(40, 46, 60, 0) 0%,
+        rgba(40, 46, 60, 0) 36%,
+        rgba(40, 46, 60, 0.5) 52%,
+        rgba(40, 46, 60, 0.86) 70%,
+        var(--navy) 92%);
+  }
+
+  .hero__content {
+    display: flex;
+    flex-direction: column;
+    padding: clamp(1rem, 4.5vw, 1.6rem) var(--pad-x) clamp(1.5rem, 6vw, 2rem);
+  }
+  .hero__inner {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+  /* logo permanece no topo, sobre a área limpa da imagem */
+  .hero__logo { margin-bottom: 0; }
+  .hero__logo img { height: 46px; }
+  /* empurra todo o bloco de texto para a base, sem subir até o rosto */
+  .hero__inner > .eyebrow { margin-top: auto; }
+
+  .eyebrow { margin-bottom: 0.45rem; }
+  .hero__title {
+    font-size: clamp(1.7rem, 8vw, 2.1rem);
+    margin-bottom: 0.55rem;
+    line-height: 1.05;
+  }
+  .hero__lead { margin-bottom: 0.8rem; }
+  .cred { margin-bottom: 0.8rem; padding-block: 0.7rem; }
+  .notice { margin-top: 0.7rem; }
+}
+
+/* ============================================================
+   SEPARADOR DIAGONAL
+   ============================================================ */
+
+.diagonal {
+  position: relative;
+  height: 88px;
+  background: var(--paper);
+  overflow: hidden;
+}
+.diagonal::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--navy);
+  clip-path: polygon(0 100%, 100% 26%, 100% 100%);
+}
+.diagonal::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--grad-gold);
+  clip-path: polygon(0 100%, 100% 26%, 100% 31%, 0 105%);
+}
+
+/* ============================================================
+   DOBRA 2 · sintomas + pull-quote
+   ============================================================ */
+
+.symptoms {
+  list-style: none;
+  margin: 0 0 var(--sp-5);
+  padding: 0;
+  max-width: 68ch;
+}
+.symptoms li {
+  position: relative;
+  padding: var(--sp-2) 0 var(--sp-2) 2.25rem;
+  border-bottom: 1px solid var(--navy-12);
+  font-size: clamp(1rem, 0.97rem + 0.25vw, 1.15rem);
+}
+.symptoms li:first-child { padding-top: 0; }
+/* marcador autoral: traço curto dourado */
+.symptoms li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 1.55rem;
+  width: 1.35rem;
+  height: 2px;
+  background: var(--gold);
+}
+.symptoms li:first-child::before { top: 0.75rem; }
+.symptoms__lead { font-weight: 600; }
+
+.pullquote {
+  font-family: var(--font-quote);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.35rem, 1.05rem + 1.4vw, 2rem);
+  line-height: 1.35;
+  color: var(--navy);
+  margin: 0;
+  padding: var(--sp-3) 0 var(--sp-3) clamp(1.25rem, 3vw, 2.25rem);
+  border-left: 3px solid var(--gold);
+  max-width: 34ch;
+}
+.pullquote--light { color: var(--paper); }
+
+/* ============================================================
+   DOBRA 3 · médico + mapa
+   ============================================================ */
+
+.doctor {
+  display: grid;
+  gap: clamp(2rem, 5vw, var(--sp-6));
+  align-items: center;
+}
+.doctor__text { order: 2; }
+.doctor__portrait {
+  order: 1;
+  margin: 0;
+  position: relative;
+}
+.doctor__portrait img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: var(--radius);
+}
+/* detalhe de marca no retrato */
+.doctor__portrait::after {
+  content: "";
+  position: absolute;
+  right: -10px;
+  bottom: -10px;
+  width: 72px;
+  height: 72px;
+  border-right: 3px solid var(--gold);
+  border-bottom: 3px solid var(--gold);
+  border-bottom-right-radius: var(--radius);
+}
+
+.pipe { color: var(--gold-40); font-weight: 500; }
+
+@media (min-width: 860px) {
+  .doctor { grid-template-columns: 1.2fr 0.8fr; }
+  .doctor__text { order: 1; }
+  .doctor__portrait { order: 2; }
+}
+
+.map {
+  margin-top: clamp(2.5rem, 6vw, var(--sp-6));
+}
+.map__title {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.01em;
+  margin: 0 0 var(--sp-1);
+}
+.map__address {
+  color: var(--paper-70);
+  font-size: 0.95rem;
+  margin: 0 0 var(--sp-3);
+}
+.map__frame {
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--gold-40);
+  aspect-ratio: 16 / 7;
+}
+.map__frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  filter: grayscale(0.25) contrast(1.02);
+}
+@media (max-width: 600px) {
+  .map__frame { aspect-ratio: 4 / 5; }
+}
+
+/* ============================================================
+   DOBRA 4 · depoimentos (carrossel horizontal, feito à mão)
+   ============================================================ */
+
+.carousel {
+  margin-top: clamp(2rem, 4vw, var(--sp-5));
+  display: grid;
+  align-items: center;
+  /* mobile: trilho em cima, controles (setas + dots) embaixo, centralizados */
+  grid-template-columns: 1fr auto auto auto 1fr;
+  grid-template-areas:
+    "track track track track track"
+    ".     prev  dots  next  .";
+  row-gap: clamp(1.1rem, 4vw, 1.6rem);
+  column-gap: 0.6rem;
+}
+
+/* trilho com scroll-snap */
+.carousel__track {
+  grid-area: track;
+  list-style: none;
+  margin: 0;
+  padding: 6px 0;                       /* respiro p/ sombra */
+  display: flex;
+  gap: clamp(0.75rem, 2vw, 1.25rem);
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  cursor: grab;
+  /* esconder scrollbar */
+  scrollbar-width: none;                /* Firefox */
+  -ms-overflow-style: none;             /* IE/Edge antigo */
+}
+.carousel__track::-webkit-scrollbar { display: none; }   /* WebKit */
+.carousel__track:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 4px;
+  border-radius: var(--radius);
+}
+
+/* mobile: trilho ocupa a largura toda (peek nas bordas da tela) */
+@media (max-width: 767px) {
+  .carousel__track {
+    margin-inline: calc(-1 * var(--pad-x));
+    padding-inline: var(--pad-x);
+    scroll-padding-inline: var(--pad-x);
+  }
+}
+
+.carousel__card {
+  flex: 0 0 clamp(280px, 80vw, 360px);
+  scroll-snap-align: center;
+  margin: 0;
+  background: var(--navy);
+  border: 1px solid var(--gold-40);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: 0 12px 26px -18px rgba(40, 46, 60, 0.55);
+}
+.carousel__card img {
+  display: block;
+  width: 100%;
+  height: auto;                          /* respeita a altura natural do print */
+}
+
+/* setas prev/next — círculo minimalista, navy sobre paper, hover dourado */
+.carousel__arrow {
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--navy-12);
+  background: var(--paper);
+  color: var(--navy);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: transform 0.16s ease, background-color 0.16s ease,
+              color 0.16s ease, border-color 0.16s ease, opacity 0.16s ease;
+}
+.carousel__arrow--prev { grid-area: prev; }
+.carousel__arrow--next { grid-area: next; }
+.carousel__arrow svg { width: 22px; height: 22px; }
+.carousel__arrow:hover {
+  background: var(--gold);
+  color: var(--navy);
+  border-color: var(--gold);
+  transform: translateY(-1px);
+}
+.carousel__arrow:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+.carousel__arrow:disabled { opacity: 0.32; cursor: default; transform: none; }
+.carousel__arrow:disabled:hover { background: var(--paper); color: var(--navy); border-color: var(--navy-12); }
+
+/* dots finos em dourado */
+.carousel__dots {
+  grid-area: dots;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  max-width: 60vw;
+}
+.carousel__dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border-radius: 50%;
+  border: 1px solid var(--gold);
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 0.16s ease, transform 0.16s ease;
+}
+.carousel__dot:hover { transform: scale(1.25); }
+.carousel__dot[aria-current="true"] { background: var(--gold); }
+.carousel__dot:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+/* desktop: setas nas laterais do trilho, dots centralizados embaixo */
+@media (min-width: 768px) {
+  .carousel {
+    grid-template-columns: min-content minmax(0, 1fr) min-content;
+    grid-template-areas:
+      "prev track next"
+      ".    dots  .";
+    column-gap: clamp(0.5rem, 2vw, 1.25rem);
+    row-gap: 1.4rem;
+  }
+}
+
+/* ============================================================
+   DOBRA 6 · CTA final
+   ============================================================ */
+
+.cta-final__title { max-width: 24ch; }
+.cta-final__support {
+  margin: var(--sp-2) 0 0;
+  font-size: 0.9rem;
+  color: var(--paper-55);
+}
+.cta-final .pullquote {
+  margin-top: clamp(2.5rem, 5vw, var(--sp-5));
+  max-width: 62ch;
+  font-size: clamp(1.15rem, 1rem + 0.9vw, 1.6rem);
+}
+
+/* ============================================================
+   RODAPÉ
+   ============================================================ */
+
+.footer {
+  background: var(--grad-navy);
+  border-top: 1px solid var(--gold-20);
+  padding-block: var(--sp-3);
+}
+.footer__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+}
+.footer__logo img { height: 40px; width: auto; }
+.footer__copy {
+  margin: 0;
+  color: var(--paper-55);
+  font-size: 0.85rem;
+}
+
+/* ============================================================
+   REVEAL (IntersectionObserver)
+   ============================================================ */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  .reveal { opacity: 1; transform: none; }
+  .btn--gold:hover, .carousel__arrow:hover, .carousel__dot:hover { transform: none; }
+}
