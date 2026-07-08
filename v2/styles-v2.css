@@ -1,0 +1,145 @@
+/* ============================================================
+   LP v2 · Obstetrícia — estilos EXCLUSIVOS da v2
+   (carregado depois de ../styles.css; reaproveita tokens e componentes)
+   ============================================================ */
+
+/* ---------- HERO · selo PARTICULAR ---------- */
+.selo {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-top: clamp(1.25rem, 3vw, 1.75rem);
+  max-width: 48ch;
+}
+.selo__badge {
+  flex: none;
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--navy);
+  background: var(--grad-gold);
+  padding: 0.42rem 0.7rem;
+  border-radius: 4px;
+  line-height: 1;
+}
+.selo__text {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--paper-55);
+}
+
+/* ---------- SEÇÃO 2 · lista + card escuro ---------- */
+.for-who {
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  margin-top: clamp(1.5rem, 4vw, 2.5rem);
+  align-items: start;
+}
+@media (min-width: 900px) {
+  .for-who { grid-template-columns: 1.05fr 0.95fr; }
+}
+
+/* card escuro (mesmo espírito do bloco navy / pull-quote) */
+.info-card {
+  background: var(--grad-navy);
+  color: var(--paper);
+  border: 1px solid var(--gold-20);
+  border-radius: var(--radius);
+  padding: clamp(1.5rem, 3.2vw, 2.4rem);
+  box-shadow: 0 18px 40px -28px rgba(40, 46, 60, 0.55);
+}
+.info-card .eyebrow { margin-bottom: 0.7rem; }
+.info-card__title {
+  font-family: var(--font-head);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1.16;
+  font-size: clamp(1.3rem, 1rem + 1.2vw, 1.75rem);
+  margin: 0 0 1rem;
+  color: var(--paper);
+}
+.info-card p {
+  margin: 0 0 0.9rem;
+  color: var(--paper-70);
+}
+.info-card p:last-child { margin-bottom: 0; }
+
+/* ---------- SEÇÃO 3 · lista em fundo navy + assinatura da citação ---------- */
+/* a lista .symptoms foi desenhada p/ fundo claro; ajusta as cores no navy */
+.section--navy .symptoms li {
+  border-bottom-color: var(--gold-20);
+  color: var(--paper-70);
+}
+.section--navy .symptoms__lead { color: var(--paper); }
+
+/* variante com título forte + descrição, respiro maior entre itens */
+.symptoms--stacked {
+  margin-top: clamp(1.5rem, 4vw, 2.25rem);
+  max-width: 72ch;
+}
+.symptoms--stacked li { padding-block: clamp(0.9rem, 2vw, 1.15rem); }
+
+.pullquote__sign {
+  display: block;
+  margin-top: 1.1rem;
+  font-family: var(--font-head);
+  font-style: normal;                /* a citação é itálico serifado; a assinatura não */
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+/* CTA centralizado abaixo de blocos (citação / carrossel) */
+.section__cta {
+  margin-top: clamp(1.75rem, 4vw, 2.75rem);
+  text-align: center;
+}
+
+/* ---------- SEÇÃO 4 · mosaico editorial (componente novo) ---------- */
+.eyebrow--heading { margin: 0; }        /* eyebrow servindo de heading da seção */
+
+.mosaic {
+  margin-top: clamp(1.5rem, 4vw, 2.5rem);
+  display: grid;
+  gap: clamp(0.6rem, 1.4vw, 1rem);
+  /* mobile: 2 colunas que quebram bem, com a foto de destaque em cima */
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "a a"
+    "b c"
+    "d e";
+}
+.mosaic__item {
+  margin: 0;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--navy-08);
+}
+.mosaic__item img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.mosaic__item--a { grid-area: a; aspect-ratio: 16 / 10; }
+.mosaic__item--b { grid-area: b; aspect-ratio: 1 / 1; }
+.mosaic__item--c { grid-area: c; aspect-ratio: 1 / 1; }
+.mosaic__item--d { grid-area: d; aspect-ratio: 1 / 1; }
+.mosaic__item--e { grid-area: e; aspect-ratio: 1 / 1; }
+
+/* desktop: mosaico assimétrico — 1 foto grande (2×2) + 4 menores */
+@media (min-width: 768px) {
+  .mosaic {
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(2, clamp(150px, 18vw, 240px));
+    grid-template-areas:
+      "a a b b c c"
+      "a a d d e e";
+  }
+  .mosaic__item { aspect-ratio: auto; }
+}

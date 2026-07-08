@@ -61,3 +61,35 @@ O mapa da dobra 3 **não** é imagem: é um `<iframe>` real do Google Maps apont
 - Paleta fixa: `--navy #282E3C`, `--gold #D9AF89`, `--paper #F4F4F4` (definidas como CSS variables em `styles.css`).
 - Tipografia via Google Fonts: **Archivo** (títulos/eyebrows), **Instrument Sans** (corpo), **Fraunces italic** (pull-quotes).
 - Sem navegação/menu/header — a página começa direto na hero, conforme especificado.
+
+---
+
+## LP v2 — Obstetrícia / Pré-natal particular (`/v2/`)
+
+Segunda página, em `/v2/index.html`. **Reaproveita** `../styles.css` e `../script.js`; estilos exclusivos ficam em `/v2/styles-v2.css` (carregado depois do global). A LP1 da raiz não foi alterada.
+
+**Imagens compartilhadas (reusadas de `../images/`):** mesmo banner da hero (`hero-desktop.avif` / `hero-mobile.avif`), `logo.png`, o retrato `sobre.avif` na seção 6 e os **10 depoimentos reais** `../images/depoimentos/depo gui 1.avif … depo gui 10.avif` (carrossel da seção 5).
+
+**Placeholders novos a substituir (em `/v2/images/`):**
+
+| Arquivo | Proporção | Finalidade |
+|---|---|---|
+| `momento-01.jpg` | destaque (retrato) | Mosaico da seção 4 — foto grande (2×2 no desktop) |
+| `momento-02.jpg` … `momento-05.jpg` | livre | Mosaico da seção 4 — fotos menores (`object-fit: cover`) |
+
+> Os arquivos `v2-depoimento-01…03.png` em `/v2/images/` ficaram sem uso (o carrossel passou a usar os depoimentos reais de `../images/depoimentos/`) — pode apagá-los.
+
+> ⚠️ **Revisar copy da seção 6:** o parágrafo do bloco médico ainda está com texto de **endometriose** (marcado no HTML com `<!-- REVISAR: texto de endometriose em página de obstetrícia -->`). O cliente vai substituir.
+>
+> Os botões da v2 apontam direto para o WhatsApp com texto de **pré-natal** (não usam `data-cta`, para o `../script.js` não sobrescrever com o texto de endometriose da LP1).
+
+---
+
+## LP v3 — SOP / Ovário Policístico (`/v3/`)
+
+Terceira página, em `/v3/index.html`. Estrutura praticamente idêntica à LP1. **Reaproveita** `../styles.css` e `../script.js`; estilos exclusivos (chips de sintomas, stats de autoridade, CTA centralizado) em `/v3/styles-v3.css`. LP1 e v2 não foram alteradas.
+
+**Imagens — todas reaproveitadas de `../images/`** (a v3 **não** tem imagens próprias): banner da hero (`hero-desktop.avif` / `hero-mobile.avif`), `logo.png`, retrato `sobre.avif` (dobra 3) e os 9 depoimentos `../images/depoimentos/depo google gui 1…9.avif` (carrossel).
+
+- **Componente novo:** chips de sintomas na hero (`.chips` / `.chip`) — apenas visuais, sem link/filtro.
+- Os botões da v3 apontam direto para o WhatsApp com texto de **SOP / ovário policístico** (sem `data-cta`).
