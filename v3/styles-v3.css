@@ -3,29 +3,9 @@
    (carregado depois de ../styles.css; reaproveita tokens e componentes)
    ============================================================ */
 
-/* ---------- HERO · chips de sintomas (componente novo) ---------- */
-/* pílulas discretas, borda fina dourada, texto pequeno — só reforço visual */
-.chips {
-  list-style: none;
-  margin: 0 0 var(--sp-4);
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  max-width: 42ch;
-}
-.chip {
-  font-family: var(--font-body);
-  font-size: 0.78rem;
-  font-weight: 500;
-  line-height: 1;
-  color: var(--paper-70);
-  background: rgba(217, 175, 137, 0.07);   /* dourado bem diluído */
-  border: 1px solid var(--gold-40);
-  border-radius: 999px;
-  padding: 0.5rem 0.8rem;
-  white-space: nowrap;
-}
+/* ---------- HERO · chips de sintomas ----------
+   As regras base .chips/.chip agora vivem no ../styles.css global
+   (compartilhadas com a v4). Aqui só o ajuste de densidade da hero. */
 
 /* hero fica densa: aperta um pouco os espaços verticais entre os blocos */
 .hero .chips { margin-bottom: clamp(1rem, 3vw, 1.5rem); }

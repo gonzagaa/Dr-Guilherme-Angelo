@@ -91,5 +91,16 @@ Terceira página, em `/v3/index.html`. Estrutura praticamente idêntica à LP1. 
 
 **Imagens — todas reaproveitadas de `../images/`** (a v3 **não** tem imagens próprias): banner da hero (`hero-desktop.avif` / `hero-mobile.avif`), `logo.png`, retrato `sobre.avif` (dobra 3) e os 9 depoimentos `../images/depoimentos/depo google gui 1…9.avif` (carrossel).
 
-- **Componente novo:** chips de sintomas na hero (`.chips` / `.chip`) — apenas visuais, sem link/filtro.
+- **Componente novo:** chips de sintomas na hero (`.chips` / `.chip`) — apenas visuais, sem link/filtro. **As regras base `.chips`/`.chip` foram movidas para o `styles.css` global** (compartilhadas com a v4); a v3 mantém só o ajuste de densidade da hero.
 - Os botões da v3 apontam direto para o WhatsApp com texto de **SOP / ovário policístico** (sem `data-cta`).
+
+---
+
+## LP v4 — Preparo Gestacional · SOP & Endometriose (`/v4/`)
+
+Quarta página, em `/v4/index.html`. Fundo de funil (mulheres com SOP/endometriose que querem engravidar). **Reaproveita** `../styles.css` e `../script.js`; estilos exclusivos em `/v4/styles-v4.css` (kicker itálico, densidade da hero, e cópias dos componentes reusados — card escuro `.info-card`/`for-who`, `.symptoms--stacked`, `.authority`, `.section__cta`). Chips vêm do global.
+
+**Imagens — todas reaproveitadas de `../images/`** (a v4 não tem imagens próprias): banner (`hero-desktop.avif` / `hero-mobile.avif`), `logo.png`, retrato `sobre.avif` (dobra 4) e os 9 depoimentos `depo google gui 1…9.avif` (carrossel).
+
+- **Componentes:** tags de diagnóstico (chips compartilhados), card escuro "box de virada", 4 passos (lista stacked), 3 stats de autoridade, kicker itálico na hero e no CTA final.
+- Os botões da v4 apontam direto para o WhatsApp com texto de **preparo gestacional** (sem `data-cta`).
