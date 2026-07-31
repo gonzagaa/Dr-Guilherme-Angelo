@@ -154,3 +154,26 @@ const LINK_CTA = "https://wa.me/5562998139185?text=Ol%C3%A1!%20Gostaria%20de%20a
     if (moved) { e.preventDefault(); e.stopPropagation(); }
   }, true);
 })();
+
+/* ============================================================
+   Facade do Google Maps — carrega o iframe só após o clique
+   (evita ~500KB de terceiros no primeiro paint)
+   ============================================================ */
+(function () {
+  "use strict";
+  var facades = document.querySelectorAll(".map__facade");
+  facades.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var src = btn.getAttribute("data-map-src");
+      if (!src) return;
+      var iframe = document.createElement("iframe");
+      iframe.title = "Mapa da Clínica Presence — R. T-44, 300, Setor Bueno, Goiânia";
+      iframe.src = src;
+      iframe.loading = "lazy";
+      iframe.referrerPolicy = "no-referrer-when-downgrade";
+      iframe.allowFullscreen = true;
+      var parent = btn.parentNode;
+      parent.replaceChild(iframe, btn);
+    }, { once: true });
+  });
+})();

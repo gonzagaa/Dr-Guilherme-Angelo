@@ -1,14 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <!-- Google Tag Manager -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-T86QGDZJ');</script>
-  <!-- End Google Tag Manager -->
-
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pré-natal particular em Goiânia — Dr. Guilherme Ângelo</title>
@@ -23,14 +15,51 @@
 
   <link rel="icon" href="../images/logo.png" type="image/png">
 
-  <!-- Fonts -->
+  <!-- Preconnect crítico -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Instrument+Sans:wght@400;500;600&family=Fraunces:ital,opsz,wght@1,9..144,400;1,9..144,500&display=swap" rel="stylesheet">
 
-  <!-- CSS global da LP1 + extras só da v2 (carregado depois) -->
-  <link rel="stylesheet" href="../styles.css">
-  <link rel="stylesheet" href="styles-v2.css">
+  <!-- Preload da imagem LCP (hero) — variante por viewport -->
+  <link rel="preload" as="image" href="../images/hero-mobile.avif" type="image/avif" media="(max-width: 767px)" fetchpriority="high">
+  <link rel="preload" as="image" href="../images/hero-desktop.avif" type="image/avif" media="(min-width: 768px)" fetchpriority="high">
+
+  <!-- CSS crítico inline (hero) -->
+  <style>
+    :root{--navy:#282E3C;--gold:#D9AF89;--paper:#F4F4F4;--paper-70:rgba(244,244,244,.7);--paper-55:rgba(244,244,244,.55);--gold-40:rgba(217,175,137,.4);--gold-light:#ecd4a6;--gold-deep:#b8863f;--pad-x:clamp(1.25rem,5vw,3rem);--container:1240px;--radius:6px;--sp-2:.875rem;--sp-3:1.25rem;--sp-4:2rem}
+    *{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+    body{margin:0;font-family:"Instrument Sans",system-ui,sans-serif;color:var(--navy);background:var(--paper);line-height:1.6;font-size:clamp(1rem,.96rem + .2vw,1.0625rem);-webkit-font-smoothing:antialiased}
+    img{display:block;max-width:100%}
+    .hero{position:relative;min-height:100dvh;overflow:hidden;display:flex;align-items:center;background:var(--navy);color:var(--paper)}
+    .hero__media{position:absolute;inset:0;z-index:0}
+    .hero__media picture{display:block;width:100%;height:100%}
+    .hero__media img{width:100%;height:100%;object-fit:cover;object-position:center}
+    .hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:linear-gradient(135deg,var(--gold-light) 0%,var(--gold) 46%,var(--gold-deep) 100%);z-index:3}
+    .hero__content{position:relative;z-index:2;width:100%;max-width:var(--container);margin-inline:auto;padding:clamp(3rem,8vw,5rem) var(--pad-x)}
+    .hero__inner{width:100%;max-width:600px}
+    .hero__logo{display:inline-block;margin-bottom:clamp(1.5rem,4vw,2.75rem)}
+    .hero__logo img{height:clamp(76px,6.5vw,104px);width:auto}
+    .eyebrow{font-family:"Archivo",system-ui,sans-serif;font-weight:700;font-size:.8125rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin:0 0 var(--sp-2)}
+    .hero__title{font-family:"Archivo",system-ui,sans-serif;font-weight:800;letter-spacing:-.025em;line-height:1.05;font-size:clamp(2.3rem,1.3rem + 4.4vw,3.9rem);margin:0 0 var(--sp-3)}
+    .hero__title .accent{background:linear-gradient(135deg,var(--gold-light) 0%,var(--gold) 46%,var(--gold-deep) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
+    .hero__lead{color:var(--paper-70);font-size:clamp(.84rem,.81rem + .25vw,.92rem);max-width:54ch;margin:0 0 var(--sp-4)}
+    @media (min-width:768px){.hero__media img{object-position:right center}}
+    @media (max-width:767px){.hero{align-items:stretch;min-height:120dvh}.hero__media img{object-position:top center}.hero__media::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;background:linear-gradient(180deg,rgba(40,46,60,0) 0%,rgba(40,46,60,0) 36%,rgba(40,46,60,.5) 52%,rgba(40,46,60,.86) 70%,var(--navy) 92%)}.hero__logo img{height:46px}.hero__title{font-size:clamp(1.7rem,8vw,2.1rem);margin-bottom:.55rem;line-height:1.05}}
+  </style>
+
+  <!-- Fonts (não-bloqueante) -->
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&family=Instrument+Sans:wght@400;500;600&family=Fraunces:ital,opsz,wght@1,9..144,400&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&family=Instrument+Sans:wght@400;500;600&family=Fraunces:ital,opsz,wght@1,9..144,400&display=swap" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800&family=Instrument+Sans:wght@400;500;600&family=Fraunces:ital,opsz,wght@1,9..144,400&display=swap"></noscript>
+
+  <!-- CSS global + extras da v2 (não-bloqueante) -->
+  <link rel="preload" as="style" href="../styles.css">
+  <link rel="stylesheet" href="../styles.css" media="print" onload="this.media='all'">
+  <link rel="preload" as="style" href="styles-v2.css">
+  <link rel="stylesheet" href="styles-v2.css" media="print" onload="this.media='all'">
+  <noscript>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="styles-v2.css">
+  </noscript>
 </head>
 <body>
   <!-- Google Tag Manager (noscript) -->
@@ -44,16 +73,16 @@
     <section class="hero" aria-labelledby="hero-title">
       <div class="hero__media">
         <picture>
-          <source media="(max-width: 767px)" srcset="../images/hero-mobile.avif">
-          <source media="(min-width: 768px)" srcset="../images/hero-desktop.avif">
-          <img src="../images/hero-desktop.avif" alt="Dr. Guilherme Ângelo, obstetra, em Goiânia" fetchpriority="high">
+          <source media="(max-width: 767px)" srcset="../images/hero-mobile.avif" width="941" height="1672">
+          <source media="(min-width: 768px)" srcset="../images/hero-desktop.avif" width="1920" height="1072">
+          <img src="../images/hero-desktop.avif" alt="Dr. Guilherme Ângelo, obstetra, em Goiânia" width="1920" height="1072" fetchpriority="high" decoding="async">
         </picture>
       </div>
 
       <div class="hero__content">
         <div class="hero__inner">
           <a class="logo hero__logo" href="#" aria-label="Dr. Guilherme Ângelo — página inicial">
-            <img src="../images/logo.png" alt="Dr. Guilherme Ângelo — Ginecologia e Obstetrícia">
+            <img src="../images/logo.png" alt="Dr. Guilherme Ângelo — Ginecologia e Obstetrícia" width="240" height="96" decoding="async">
           </a>
 
           <p class="eyebrow">Obstetrícia particular — Goiânia</p>
@@ -165,11 +194,11 @@
         </div>
 
         <div class="mosaic reveal">
-          <figure class="mosaic__item mosaic__item--a"><img src="images/momentos%201.avif" alt="Momento real de acompanhamento — foto 1" loading="lazy"></figure>
-          <figure class="mosaic__item mosaic__item--b"><img src="images/momentos%202.avif" alt="Momento real de acompanhamento — foto 2" loading="lazy"></figure>
-          <figure class="mosaic__item mosaic__item--c"><img src="images/momentos%203.avif" alt="Momento real de acompanhamento — foto 3" loading="lazy"></figure>
-          <figure class="mosaic__item mosaic__item--d"><img src="images/momentos%204.avif" alt="Momento real de acompanhamento — foto 4" loading="lazy"></figure>
-          <figure class="mosaic__item mosaic__item--e"><img src="images/momento%205.avif" alt="Momento real de acompanhamento — foto 5" loading="lazy"></figure>
+          <figure class="mosaic__item mosaic__item--a"><img src="images/momentos%201.avif" alt="Momento real de acompanhamento — foto 1" width="1600" height="1067" loading="lazy" decoding="async"></figure>
+          <figure class="mosaic__item mosaic__item--b"><img src="images/momentos%202.avif" alt="Momento real de acompanhamento — foto 2" width="1600" height="1068" loading="lazy" decoding="async"></figure>
+          <figure class="mosaic__item mosaic__item--c"><img src="images/momentos%203.avif" alt="Momento real de acompanhamento — foto 3" width="1600" height="1067" loading="lazy" decoding="async"></figure>
+          <figure class="mosaic__item mosaic__item--d"><img src="images/momentos%204.avif" alt="Momento real de acompanhamento — foto 4" width="1600" height="1068" loading="lazy" decoding="async"></figure>
+          <figure class="mosaic__item mosaic__item--e"><img src="images/momento%205.avif" alt="Momento real de acompanhamento — foto 5" width="1067" height="1600" loading="lazy" decoding="async"></figure>
         </div>
       </div>
     </section>
@@ -191,16 +220,16 @@
         </button>
 
         <ul class="carousel__track" tabindex="0" role="list" aria-label="Depoimentos — arraste ou use as setas para navegar">
-          <li class="carousel__card" role="listitem"><img src="../images/depoimentos/depo%20gui%201.avif" alt="Depoimento de paciente 1" loading="lazy"></li>
-          <li class="carousel__card" role="listitem"><img src="../images/depoimentos/depo%20gui%202.avif" alt="Depoimento de paciente 2" loading="lazy"></li>
-          <li class="carousel__card" role="listitem"><img src="../images/depoimentos/depo%20gui%203.avif" alt="Depoimento de paciente 3" loading="lazy"></li>
-          <li class="carousel__card" role="listitem"><img src="../images/depoimentos/depo%20gui%204.avif" alt="Depoimento de paciente 4" loading="lazy"></li>
-          <li class="carousel__card" role="listitem"><img src="../images/depoimentos/depo%20gui%205.avif" alt="Depoimento de paciente 5" loading="lazy"></li>
-          <li class="carousel__card" role="listitem"><img src="../images/depoimentos/depo%20gui%206.avif" alt="Depoimento de paciente 6" loading="lazy"></li>
-          <li class="carousel__card" role="listitem"><img src="../images/depoimentos/depo%20gui%207.avif" alt="Depoimento de paciente 7" loading="lazy"></li>
-          <li class="carousel__card" role="listitem"><img src="../images/depoimentos/depo%20gui%208.avif" alt="Depoimento de paciente 8" loading="lazy"></li>
-          <li class="carousel__card" role="listitem"><img src="../images/depoimentos/depo%20gui%209.avif" alt="Depoimento de paciente 9" loading="lazy"></li>
-          <li class="carousel__card" role="listitem"><img src="../images/depoimentos/depo%20gui%2010.avif" alt="Depoimento de paciente 10" loading="lazy"></li>
+          <li class="carousel__card" role="listitem"><img src="../images/depoimentos/depo%20gui%201.avif" alt="Depoimento de paciente 1" width="1206" height="855" loading="lazy" decoding="async"></li>
+          <li class="carousel__card" role="listitem"><img src="../images/depoimentos/depo%20gui%202.avif" alt="Depoimento de paciente 2" width="1206" height="855" loading="lazy" decoding="async"></li>
+          <li class="carousel__card" role="listitem"><img src="../images/depoimentos/depo%20gui%203.avif" alt="Depoimento de paciente 3" width="1206" height="855" loading="lazy" decoding="async"></li>
+          <li class="carousel__card" role="listitem"><img src="../images/depoimentos/depo%20gui%204.avif" alt="Depoimento de paciente 4" width="1206" height="855" loading="lazy" decoding="async"></li>
+          <li class="carousel__card" role="listitem"><img src="../images/depoimentos/depo%20gui%205.avif" alt="Depoimento de paciente 5" width="1206" height="855" loading="lazy" decoding="async"></li>
+          <li class="carousel__card" role="listitem"><img src="../images/depoimentos/depo%20gui%206.avif" alt="Depoimento de paciente 6" width="1206" height="855" loading="lazy" decoding="async"></li>
+          <li class="carousel__card" role="listitem"><img src="../images/depoimentos/depo%20gui%207.avif" alt="Depoimento de paciente 7" width="1206" height="855" loading="lazy" decoding="async"></li>
+          <li class="carousel__card" role="listitem"><img src="../images/depoimentos/depo%20gui%208.avif" alt="Depoimento de paciente 8" width="1206" height="855" loading="lazy" decoding="async"></li>
+          <li class="carousel__card" role="listitem"><img src="../images/depoimentos/depo%20gui%209.avif" alt="Depoimento de paciente 9" width="1206" height="855" loading="lazy" decoding="async"></li>
+          <li class="carousel__card" role="listitem"><img src="../images/depoimentos/depo%20gui%2010.avif" alt="Depoimento de paciente 10" width="1206" height="855" loading="lazy" decoding="async"></li>
         </ul>
 
         <button class="carousel__arrow carousel__arrow--next" type="button" aria-label="Próximos depoimentos">
@@ -239,7 +268,7 @@
         </div>
 
         <figure class="doctor__portrait reveal">
-          <img src="../images/sobre.avif" alt="Retrato do Dr. Guilherme Ângelo" loading="lazy">
+          <img src="../images/sobre.avif" alt="Retrato do Dr. Guilherme Ângelo" width="800" height="1000" loading="lazy" decoding="async">
         </figure>
       </div>
 
@@ -247,12 +276,12 @@
         <h3 class="map__title">Local de atendimento</h3>
         <p class="map__address">Clínica Presence · R. T-44, 300 - Qd 20 - St. Bueno, Goiânia - GO, 74210-150</p>
         <div class="map__frame">
-          <iframe
-            title="Mapa da Clínica Presence — R. T-44, 300, Setor Bueno, Goiânia"
-            src="https://www.google.com/maps?q=Cl%C3%ADnica%20Presence%20R.%20T-44%2C%20300%20-%20St.%20Bueno%2C%20Goi%C3%A2nia%20-%20GO%2C%2074210-150&output=embed"
-            loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"
-            allowfullscreen></iframe>
+          <button type="button" class="map__facade" data-map-src="https://www.google.com/maps?q=Cl%C3%ADnica%20Presence%20R.%20T-44%2C%20300%20-%20St.%20Bueno%2C%20Goi%C3%A2nia%20-%20GO%2C%2074210-150&output=embed" aria-label="Carregar mapa da Clínica Presence">
+            <span class="map__facade-label">
+              <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7Zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5Z"/></svg>
+              Ver no mapa
+            </span>
+          </button>
         </div>
       </div>
     </section>
@@ -261,19 +290,20 @@
 
   <footer class="footer">
     <div class="container footer__inner">
-      <span class="logo footer__logo"><img src="../images/logo.png" alt="Dr. Guilherme Ângelo — Ginecologia e Obstetrícia"></span>
+      <span class="logo footer__logo"><img src="../images/logo.png" alt="Dr. Guilherme Ângelo — Ginecologia e Obstetrícia" width="120" height="48" loading="lazy" decoding="async"></span>
       <p class="footer__copy">© Dr. Guilherme Ângelo</p>
     </div>
   </footer>
 
-  <!-- JS global da LP1 (reveal + carrossel). Sem data-cta: os botões daqui já
-       apontam direto para o WhatsApp de pré-natal, então o script não os sobrescreve. -->
-  <script src="../script.js"></script>
+  <!-- CSS do formulário (não-bloqueante) -->
+  <link rel="preload" as="style" href="../form/formulario.css">
+  <link rel="stylesheet" href="../form/formulario.css" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="../form/formulario.css"></noscript>
 
-  <!-- Estilos do formulário (arquivo hospedado no SEU site) -->
-  <link rel="stylesheet" href="../form/formulario.css">
+  <!-- Script principal (carrossel + reveal + facade mapa) -->
+  <script src="../script.js" defer></script>
 
-  <!-- Script do formulário (arquivo hospedado no SEU site, antes do </body>) -->
+  <!-- Script do formulário -->
   <script
     src="../form/formulario.js"
     data-client-id="d83fe1c4-bc7b-4816-9b5d-e0755edfda16"
@@ -283,5 +313,19 @@
     data-debug="false"
     defer
   ></script>
+
+  <!-- GTM: carrega após interação do usuário ou 3s após o load -->
+  <script>
+    (function(){
+      var loaded=false;
+      function loadGTM(){
+        if(loaded)return;loaded=true;
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-T86QGDZJ');
+      }
+      var events=['scroll','mousemove','touchstart','keydown','click'];
+      events.forEach(function(e){window.addEventListener(e,loadGTM,{once:true,passive:true})});
+      window.addEventListener('load',function(){setTimeout(loadGTM,3000)});
+    })();
+  </script>
 </body>
 </html>
