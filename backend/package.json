@@ -1,0 +1,10 @@
+{
+  "name": "capi-backend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Backend serverless (Vercel) para a Conversions API do Meta — eventos PageView e CompleteRegistration.",
+  "engines": {
+    "node": ">=18"
+  }
+}
