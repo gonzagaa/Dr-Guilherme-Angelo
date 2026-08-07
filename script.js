@@ -189,6 +189,12 @@ const LINK_CTA = "https://wa.me/5562998139185?text=Ol%C3%A1!%20Gostaria%20de%20a
 
   var CAPI_BASE = "https://drguilhermeangelo-backend.vercel.app";
 
+  // Modo debug: liga com ?capi_debug=1 na URL, ou localStorage.capi_debug = "1".
+  // Com ele, cada evento loga no console o que foi enviado + a resposta do Meta.
+  var DEBUG = /[?&]capi_debug=1/.test(location.search) || (function () {
+    try { return localStorage.getItem("capi_debug") === "1"; } catch (e) { return false; }
+  })();
+
   function getCookie(name) {
     var m = document.cookie.match("(^|; )" + name + "=([^;]+)");
     return m ? decodeURIComponent(m[2]) : null;
@@ -229,13 +235,27 @@ const LINK_CTA = "https://wa.me/5562998139185?text=Ol%C3%A1!%20Gostaria%20de%20a
   }
   function send(path, body) {
     try {
-      fetch(CAPI_BASE + path, {
+      var p = fetch(CAPI_BASE + path, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
         keepalive: true,
-      }).catch(function () {});
-    } catch (e) {}
+      });
+      if (DEBUG) {
+        p.then(function (r) {
+          return r.json().catch(function () { return {}; }).then(function (j) {
+            var ok = r.ok && j && j.events_received >= 1;
+            console.log("%c[CAPI] " + path + " → " + (ok ? "OK ✅" : "FALHOU ❌"),
+              "color:" + (ok ? "#1a7f37" : "#b00020") + ";font-weight:bold",
+              { enviado: body, status: r.status, respostaDoMeta: j });
+          });
+        }).catch(function (err) {
+          console.warn("[CAPI] " + path + " erro de rede/CORS:", err);
+        });
+      } else {
+        p.catch(function () {});
+      }
+    } catch (e) { if (DEBUG) console.warn("[CAPI] erro:", e); }
   }
 
   // PageView — uma vez por carregamento
