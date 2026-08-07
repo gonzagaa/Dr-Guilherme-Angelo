@@ -301,6 +301,14 @@
 
         await sendLead({ api, payload, debug });
 
+        // Hook opcional do site (ex.: Meta CAPI "registro concluído").
+        // Fica antes do redirect para disparar mesmo quando há data-redirect.
+        try {
+          if (typeof window.__capiLead === "function") {
+            window.__capiLead({ name, email, phone });
+          }
+        } catch (e) {}
+
         toast.show("Enviado com sucesso! ✅", "success");
         formEl.reset();
 

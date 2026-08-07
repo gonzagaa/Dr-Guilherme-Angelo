@@ -177,3 +177,73 @@ const LINK_CTA = "https://wa.me/5562998139185?text=Ol%C3%A1!%20Gostaria%20de%20a
     }, { once: true });
   });
 })();
+
+/* ============================================================
+   Meta Conversions API (CAPI) — server-side (sem Pixel no navegador)
+   Dispara PageView no carregamento e expõe window.__capiLead para o
+   formulário disparar o CompleteRegistration (registro concluído).
+   O backend fica no Vercel; o token vive lá, nunca aqui.
+   ============================================================ */
+(function () {
+  "use strict";
+
+  var CAPI_BASE = "https://drguilhermeangelo-backend.vercel.app";
+
+  function getCookie(name) {
+    var m = document.cookie.match("(^|; )" + name + "=([^;]+)");
+    return m ? decodeURIComponent(m[2]) : null;
+  }
+  function setCookie(name, value) {
+    var d = new Date();
+    d.setTime(d.getTime() + 90 * 864e5); // 90 dias
+    document.cookie = name + "=" + value + ";expires=" + d.toUTCString() + ";path=/;SameSite=Lax";
+  }
+  function rand() {
+    return "" + Math.floor(Math.random() * 1e10) + Math.floor(Math.random() * 1e10);
+  }
+  function uuid() {
+    if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+      var r = (Math.random() * 16) | 0, v = c === "x" ? r : (r & 0x3) | 0x8;
+      return v.toString(16);
+    });
+  }
+
+  // _fbp: gera no formato do Meta se ainda não existir
+  var fbp = getCookie("_fbp");
+  if (!fbp) { fbp = "fb.1." + Date.now() + "." + rand(); setCookie("_fbp", fbp); }
+
+  // _fbc: deriva do fbclid da URL (clique de anúncio), se houver
+  var fbc = getCookie("_fbc");
+  try {
+    var fbclid = new URLSearchParams(location.search).get("fbclid");
+    if (!fbc && fbclid) { fbc = "fb.1." + Date.now() + "." + fbclid; setCookie("_fbc", fbc); }
+  } catch (e) {}
+
+  function baseBody(extra) {
+    var body = { event_source_url: location.href, event_id: uuid() };
+    if (fbp) body.fbp = fbp;
+    if (fbc) body.fbc = fbc;
+    if (extra) { for (var k in extra) { if (extra[k] != null) body[k] = extra[k]; } }
+    return body;
+  }
+  function send(path, body) {
+    try {
+      fetch(CAPI_BASE + path, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+        keepalive: true,
+      }).catch(function () {});
+    } catch (e) {}
+  }
+
+  // PageView — uma vez por carregamento
+  send("/api/pageview", baseBody());
+
+  // Registro concluído — chamado pelo formulário no sucesso do envio
+  window.__capiLead = function (data) {
+    data = data || {};
+    send("/api/lead", baseBody({ name: data.name, email: data.email, phone: data.phone }));
+  };
+})();
