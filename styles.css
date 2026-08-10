@@ -745,10 +745,24 @@ a { color: inherit; }
   flex-wrap: wrap;
 }
 .footer__logo img { height: 40px; width: auto; }
+.footer__info {
+  display: grid;
+  gap: 0.2rem;
+  text-align: right;
+}
+.footer__doctor {
+  margin: 0;
+  color: var(--paper-70);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
 .footer__copy {
   margin: 0;
   color: var(--paper-55);
-  font-size: 0.85rem;
+  font-size: 0.8rem;
+}
+@media (max-width: 560px) {
+  .footer__info { text-align: left; }
 }
 
 /* ============================================================
