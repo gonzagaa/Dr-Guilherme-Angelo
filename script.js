@@ -179,21 +179,36 @@ const LINK_CTA = "https://wa.me/5562998139185?text=Ol%C3%A1!%20Gostaria%20de%20a
 })();
 
 /* ============================================================
-   Meta Conversions API (CAPI) — server-side (sem Pixel no navegador)
-   Dispara PageView no carregamento e expõe window.__capiLead para o
-   formulário disparar o CompleteRegistration (registro concluído).
-   O backend fica no Vercel; o token vive lá, nunca aqui.
+   Meta Pixel (navegador) + Conversions API (servidor) — desduplicados
+   Dispara PageView no load e CompleteRegistration (via __capiLead) TANTO
+   no Pixel quanto na CAPI, com o MESMO event_id, pro Meta desduplicar
+   (é isso que faz a "Cobertura de eventos" subir).
+   ⚠️ O Pixel PRECISA sair do GTM — senão o GTM dispara um PageView próprio,
+      sem o mesmo event_id, e a cobertura não sobe.
+   O backend/CAPI fica no Vercel; o token vive lá, nunca aqui.
    ============================================================ */
 (function () {
   "use strict";
 
   var CAPI_BASE = "https://drguilhermeangelo-backend.vercel.app";
+  var PIXEL_ID = "1076135168411053";
 
   // Modo debug: liga com ?capi_debug=1 na URL, ou localStorage.capi_debug = "1".
   // Com ele, cada evento loga no console o que foi enviado + a resposta do Meta.
   var DEBUG = /[?&]capi_debug=1/.test(location.search) || (function () {
     try { return localStorage.getItem("capi_debug") === "1"; } catch (e) { return false; }
   })();
+
+  // ---- Pixel do Meta (navegador), carregado AQUI e SEM PageView automático ----
+  // O PageView é disparado mais abaixo, com o mesmo event_id que vai pra CAPI.
+  !function (f, b, e, v, n, t, s) {
+    if (f.fbq) return; n = f.fbq = function () {
+      n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+    }; if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = "2.0";
+    n.queue = []; t = b.createElement(e); t.async = !0; t.src = v;
+    s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s);
+  }(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
+  fbq("init", PIXEL_ID);
 
   function getCookie(name) {
     var m = document.cookie.match("(^|; )" + name + "=([^;]+)");
@@ -226,8 +241,16 @@ const LINK_CTA = "https://wa.me/5562998139185?text=Ol%C3%A1!%20Gostaria%20de%20a
     if (!fbc && fbclid) { fbc = "fb.1." + Date.now() + "." + fbclid; setCookie("_fbc", fbc); }
   } catch (e) {}
 
-  function baseBody(extra) {
-    var body = { event_source_url: location.href, event_id: uuid() };
+  // dispara o MESMO evento no Pixel do navegador, com o MESMO event_id → desduplicação
+  function pixelTrack(name, evId, custom) {
+    try {
+      if (window.fbq) fbq("track", name, custom || {}, { eventID: evId });
+      if (DEBUG) console.log("%c[Pixel] " + name + " · eventID=" + evId, "color:#3b5998;font-weight:bold");
+    } catch (e) {}
+  }
+
+  function baseBody(evId, extra) {
+    var body = { event_source_url: location.href, event_id: evId };
     if (fbp) body.fbp = fbp;
     if (fbc) body.fbc = fbc;
     if (extra) { for (var k in extra) { if (extra[k] != null) body[k] = extra[k]; } }
@@ -258,12 +281,16 @@ const LINK_CTA = "https://wa.me/5562998139185?text=Ol%C3%A1!%20Gostaria%20de%20a
     } catch (e) { if (DEBUG) console.warn("[CAPI] erro:", e); }
   }
 
-  // PageView — uma vez por carregamento
-  send("/api/pageview", baseBody());
+  // PageView — navegador (Pixel) + servidor (CAPI) com o MESMO event_id
+  var pvId = uuid();
+  pixelTrack("PageView", pvId);
+  send("/api/pageview", baseBody(pvId));
 
   // Registro concluído — chamado pelo formulário no sucesso do envio
   window.__capiLead = function (data) {
     data = data || {};
-    send("/api/lead", baseBody({ name: data.name, email: data.email, phone: data.phone }));
+    var leadId = uuid();
+    pixelTrack("CompleteRegistration", leadId);
+    send("/api/lead", baseBody(leadId, { name: data.name, email: data.email, phone: data.phone }));
   };
 })();
