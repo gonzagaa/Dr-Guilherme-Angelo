@@ -301,13 +301,15 @@
 
         await sendLead({ api, payload, debug });
 
-        // Hook opcional do site (ex.: Meta CAPI "registro concluído").
+        // CompleteRegistration — Pixel + CAPI com o MESMO event_id (dedupe no Meta).
         // Fica antes do redirect para disparar mesmo quando há data-redirect.
         try {
-          if (typeof window.__capiLead === "function") {
-            window.__capiLead({ name, email, phone });
+          if (window.LBTracking && typeof window.LBTracking.trackLead === "function") {
+            window.LBTracking.trackLead({ name: name, email: email, phone: phone });
           }
-        } catch (e) {}
+        } catch (err) {
+          errlog(debug, "trackLead error:", err);
+        }
 
         toast.show("Enviado com sucesso! ✅", "success");
         formEl.reset();
