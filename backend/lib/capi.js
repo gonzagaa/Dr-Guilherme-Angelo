@@ -6,20 +6,67 @@ import crypto from "node:crypto";
 
 const GRAPH_VERSION = "v21.0";
 
-// SHA-256 de um valor "normalizado" (trim + lowercase), como o Meta exige.
+// Remove acentos/diacríticos: "Ângelo" → "angelo".
+// O Meta normaliza assim antes de hashear; se não fizermos igual, o hash
+// nunca bate e a correspondência (match quality) cai.
+function stripDiacritics(value) {
+  return String(value).normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+}
+
+// SHA-256 de um valor "normalizado" (trim + lowercase + sem acentos),
+// como o Meta exige. Usado em em / fn / ln.
+//
+// Exemplos:
+//   sha256("  Guilherme ")     → hash de "guilherme"
+//   sha256("Ângelo")           → hash de "angelo"
+//   sha256("MARIA@Exemplo.COM")→ hash de "maria@exemplo.com"
 export function sha256(value) {
   if (value == null) return undefined;
-  const norm = String(value).trim().toLowerCase();
+  const norm = stripDiacritics(String(value).trim().toLowerCase());
   if (!norm) return undefined;
   return crypto.createHash("sha256").update(norm).digest("hex");
 }
 
-// Telefone: só dígitos (com DDI), depois hash.
-export function hashPhone(value) {
+// Telefone → E.164 sem "+", como o Meta espera (DDI + DDD + número).
+// Se vier no padrão brasileiro sem DDI (10 dígitos fixo, 11 celular),
+// prefixa 55. Se já vier com 55 e 12-13 dígitos, mantém.
+//
+// Casos cobertos:
+//   "62998139185"        → 11 dígitos, sem DDI  → "5562998139185"
+//   "5562998139185"      → 13 dígitos, com 55   → "5562998139185" (inalterado)
+//   "(62) 99813-9185"    → dígitos "62998139185" → "5562998139185"
+//   "+55 62 99813-9185"  → dígitos "5562998139185" → "5562998139185" (inalterado)
+//   "6232811234"         → 10 dígitos, fixo BR   → "556232811234"
+//   "12025550123"        → 11 dígitos → "5512025550123" (ver ressalva abaixo)
+//
+// Ressalva conhecida: um número estrangeiro de 10-11 dígitos digitado sem DDI
+// é indistinguível de um brasileiro sem DDI. Como o formulário é BR-only,
+// assumimos 55. Números internacionais devem ser digitados com o DDI.
+export function normalizePhone(value) {
   if (value == null) return undefined;
   const digits = String(value).replace(/\D+/g, "");
   if (!digits) return undefined;
-  return crypto.createHash("sha256").update(digits).digest("hex");
+
+  // Já tem DDI 55 e comprimento válido (55 + 10 ou 11) → não mexe.
+  if (digits.startsWith("55") && (digits.length === 12 || digits.length === 13)) {
+    return digits;
+  }
+
+  // Padrão BR sem DDI: 10 (fixo) ou 11 (celular com 9) → prefixa 55.
+  if (digits.length === 10 || digits.length === 11) {
+    return "55" + digits;
+  }
+
+  // Qualquer outro comprimento: já traz algum DDI (ou é inválido).
+  // Mandamos como está — o Meta descarta silenciosamente o que não casa.
+  return digits;
+}
+
+// Telefone: normaliza para E.164 sem "+", depois hash.
+export function hashPhone(value) {
+  const normalized = normalizePhone(value);
+  if (!normalized) return undefined;
+  return crypto.createHash("sha256").update(normalized).digest("hex");
 }
 
 export function newEventId() {
@@ -41,7 +88,17 @@ export function applyCors(req, res) {
   const origin = req.headers.origin;
   let allowOrigin = "*";
   if (!allowed.includes("*")) {
-    allowOrigin = allowed.includes(origin) ? origin : (allowed[0] || "");
+    if (allowed.includes(origin)) {
+      allowOrigin = origin;
+    } else {
+      allowOrigin = allowed[0] || "";
+      // Origem não permitida: o navegador vai bloquear a resposta e a chamada
+      // "some" sem deixar rastro no cliente. Deixa rastro AQUI.
+      console.error(
+        "[CAPI] CORS: origem não permitida — o navegador vai bloquear esta resposta.",
+        { origin_recebida: origin, ALLOWED_ORIGINS: allowed }
+      );
+    }
   } else if (origin) {
     allowOrigin = origin; // reflete a origem
   }
@@ -68,6 +125,14 @@ export async function sendToMeta(userData, eventData) {
   const pixelId = process.env.FB_PIXEL_ID;
   const token = process.env.FB_CAPI_TOKEN;
   if (!pixelId || !token) {
+    console.error(
+      "[CAPI] CONFIG AUSENTE — variáveis de ambiente não configuradas na Vercel.",
+      {
+        FB_PIXEL_ID: pixelId ? "definida" : "AUSENTE",
+        FB_CAPI_TOKEN: token ? "definida" : "AUSENTE",
+        evento: eventData && eventData.event_name,
+      }
+    );
     throw new Error("FB_PIXEL_ID e/ou FB_CAPI_TOKEN não configurados nas variáveis de ambiente");
   }
 
@@ -80,6 +145,11 @@ export async function sendToMeta(userData, eventData) {
   };
   if (process.env.FB_TEST_EVENT_CODE) {
     body.test_event_code = process.env.FB_TEST_EVENT_CODE;
+    console.log(
+      "[CAPI] ATENÇÃO: FB_TEST_EVENT_CODE está setado — este evento vai para " +
+      "'Testar eventos' e NÃO aparece na visão de produção do Events Manager.",
+      { event_name: eventData && eventData.event_name }
+    );
   }
 
   const url = `https://graph.facebook.com/${GRAPH_VERSION}/${pixelId}/events?access_token=${encodeURIComponent(token)}`;
@@ -90,4 +160,32 @@ export async function sendToMeta(userData, eventData) {
   });
   const json = await r.json().catch(() => ({}));
   return { ok: r.ok, status: r.status, json };
+}
+
+// Log padronizado da resposta do Meta. Nunca recebe PII: só hashes/flags.
+export function logMetaResult(eventName, eventId, result) {
+  const { ok, status, json } = result;
+  const received = json && json.events_received;
+
+  if (!ok || !(received >= 1)) {
+    const err = (json && json.error) || {};
+    console.error(`[CAPI] ${eventName} RECUSADO pelo Meta — HTTP ${status}`, {
+      event_id: eventId,
+      fbtrace_id: err.fbtrace_id,
+      error_message: err.message,
+      error_type: err.type,
+      error_code: err.code,
+      error_subcode: err.error_subcode,
+      error_user_msg: err.error_user_msg,
+      resposta_completa: json,
+    });
+    return;
+  }
+
+  console.log(`[CAPI] ${eventName} aceito pelo Meta`, {
+    event_id: eventId,
+    events_received: received,
+    fbtrace_id: json && json.fbtrace_id,
+    messages: json && json.messages,
+  });
 }

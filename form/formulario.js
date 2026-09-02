@@ -83,12 +83,24 @@
     if (!res.ok) {
       const msg = data?.message || data?.error || "Erro ao enviar lead";
       const hint = data?.hint ? ` (${data.hint})` : "";
+      // SEMPRE loga, independente de data-debug: é este erro que impede o
+      // CompleteRegistration de disparar (o throw sai antes do trackLead).
+      console.error("[LB FORM] envio do lead FALHOU — HTTP " + res.status, {
+        endpoint: api,
+        status: res.status,
+        resposta: data,
+      });
       throw new Error(msg + hint);
     }
 
     if (data && data.ok === false) {
       const msg = data?.message || "Erro ao enviar lead";
       const hint = data?.hint ? ` (${data.hint})` : "";
+      console.error("[LB FORM] envio do lead recusado pela API (ok:false) — HTTP " + res.status, {
+        endpoint: api,
+        status: res.status,
+        resposta: data,
+      });
       throw new Error(msg + hint);
     }
 
@@ -326,6 +338,12 @@
         if (formEl === modalForm) closeModal();
       } catch (e) {
         errlog(debug, e);
+        // SEMPRE loga: cobre também erro de rede/CORS no fetch (sem status/corpo).
+        // Se este log aparecer, o CompleteRegistration NÃO foi disparado.
+        console.error(
+          "[LB FORM] submit abortado — CompleteRegistration NÃO disparado:",
+          e
+        );
         toast.show(e?.message || "Erro ao enviar. Tente novamente.", "error");
       } finally {
         setSubmitting(formEl, false);
