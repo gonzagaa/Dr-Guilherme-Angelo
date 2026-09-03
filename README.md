@@ -64,41 +64,41 @@ O mapa da dobra 3 **não** é imagem: é um `<iframe>` real do Google Maps apont
 
 ---
 
-## LP v2 — Obstetrícia / Pré-natal particular (`/v2/`)
+## LP v2 — Obstetrícia / Pré-natal particular (`/v2o/`)
 
-Segunda página, em `/v2/index.html`. **Reaproveita** `../styles.css` e `../script.js`; estilos exclusivos ficam em `/v2/styles-v2.css` (carregado depois do global). A LP1 da raiz não foi alterada.
+Segunda página, em `/v2o/index.html`. **Reaproveita** `../styles.css` e `../script.js`; estilos exclusivos ficam em `/v2o/styles-v2.css` (carregado depois do global). A LP1 da raiz não foi alterada.
 
 **Imagens compartilhadas (reusadas de `../images/`):** mesmo banner da hero (`hero-desktop.avif` / `hero-mobile.avif`), `logo.png`, o retrato `sobre.avif` na seção 6 e os **10 depoimentos reais** `../images/depoimentos/depo gui 1.avif … depo gui 10.avif` (carrossel da seção 5).
 
-**Placeholders novos a substituir (em `/v2/images/`):**
+**Placeholders novos a substituir (em `/v2o/images/`):**
 
 | Arquivo | Proporção | Finalidade |
 |---|---|---|
 | `momento-01.jpg` | destaque (retrato) | Mosaico da seção 4 — foto grande (2×2 no desktop) |
 | `momento-02.jpg` … `momento-05.jpg` | livre | Mosaico da seção 4 — fotos menores (`object-fit: cover`) |
 
-> Os arquivos `v2-depoimento-01…03.png` em `/v2/images/` ficaram sem uso (o carrossel passou a usar os depoimentos reais de `../images/depoimentos/`) — pode apagá-los.
+> Os arquivos `v2-depoimento-01…03.png` em `/v2o/images/` ficaram sem uso (o carrossel passou a usar os depoimentos reais de `../images/depoimentos/`) — pode apagá-los.
 
 > ⚠️ **Revisar copy da seção 6:** o parágrafo do bloco médico ainda está com texto de **endometriose** (marcado no HTML com `<!-- REVISAR: texto de endometriose em página de obstetrícia -->`). O cliente vai substituir.
 >
-> Os botões da v2 apontam direto para o WhatsApp com texto de **pré-natal** (não usam `data-cta`, para o `../script.js` não sobrescrever com o texto de endometriose da LP1).
+> Os botões da v2 apontam direto para o WhatsApp com o código de origem **(V2)** (não usam `data-cta`, para o `../script.js` não sobrescrever o texto com o código de origem da LP1).
 
 ---
 
-## LP v3 — SOP / Ovário Policístico (`/v3/`)
+## LP v3 — SOP / Ovário Policístico (`/v3s/`)
 
-Terceira página, em `/v3/index.html`. Estrutura praticamente idêntica à LP1. **Reaproveita** `../styles.css` e `../script.js`; estilos exclusivos (chips de sintomas, stats de autoridade, CTA centralizado) em `/v3/styles-v3.css`. LP1 e v2 não foram alteradas.
+Terceira página, em `/v3s/index.html`. Estrutura praticamente idêntica à LP1. **Reaproveita** `../styles.css` e `../script.js`; estilos exclusivos (chips de sintomas, stats de autoridade, CTA centralizado) em `/v3s/styles-v3.css`. LP1 e v2 não foram alteradas.
 
 **Imagens — todas reaproveitadas de `../images/`** (a v3 **não** tem imagens próprias): banner da hero (`hero-desktop.avif` / `hero-mobile.avif`), `logo.png`, retrato `sobre.avif` (dobra 3) e os 9 depoimentos `../images/depoimentos/depo google gui 1…9.avif` (carrossel).
 
 - **Componente novo:** chips de sintomas na hero (`.chips` / `.chip`) — apenas visuais, sem link/filtro. **As regras base `.chips`/`.chip` foram movidas para o `styles.css` global** (compartilhadas com a v4); a v3 mantém só o ajuste de densidade da hero.
-- Os botões da v3 apontam direto para o WhatsApp com texto de **SOP / ovário policístico** (sem `data-cta`).
+- Os botões da v3 apontam direto para o WhatsApp com o código de origem **(V3)** (sem `data-cta`).
 
 ---
 
-## LP v4 — Preparo Gestacional · SOP & Endometriose (`/v4/`)
+## LP v4 — Preparo Gestacional · SOP & Endometriose (`/v4pg/`)
 
-Quarta página, em `/v4/index.html`. Fundo de funil (mulheres com SOP/endometriose que querem engravidar). **Reaproveita** `../styles.css` e `../script.js`; estilos exclusivos em `/v4/styles-v4.css` (kicker itálico, densidade da hero, e cópias dos componentes reusados — card escuro `.info-card`/`for-who`, `.symptoms--stacked`, `.authority`, `.section__cta`). Chips vêm do global.
+Quarta página, em `/v4pg/index.html`. Fundo de funil (mulheres com SOP/endometriose que querem engravidar). **Reaproveita** `../styles.css` e `../script.js`; estilos exclusivos em `/v4pg/styles-v4.css` (kicker itálico, densidade da hero, e cópias dos componentes reusados — card escuro `.info-card`/`for-who`, `.symptoms--stacked`, `.authority`, `.section__cta`). Chips vêm do global.
 
 **Imagens — todas reaproveitadas de `../images/`** (a v4 não tem imagens próprias): banner (`hero-desktop.avif` / `hero-mobile.avif`), `logo.png`, retrato `sobre.avif` (dobra 4) e os 9 depoimentos `depo google gui 1…9.avif` (carrossel).
 

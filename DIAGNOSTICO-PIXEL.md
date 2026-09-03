@@ -67,7 +67,7 @@ aqui para ninguém reinvestigar:
 | Formulário → backend | `POST /api/lead` retorna **HTTP 200** |
 | CAPI → Meta | Meta responde `{"events_received":1,"messages":[]}` |
 | Deduplicação | mesmo `event_id` gerado uma única vez em `pixel.js` e reaproveitado no payload do servidor (`backend/api/lead.js` respeita `body.event_id`) |
-| Consistência entre as 4 LPs | bloco de tracking idêntico em `/`, `/sop/`, `/preparo-gestacional/`, `/obstetricia/` |
+| Consistência entre as 4 LPs | bloco de tracking idêntico nas 4 LPs (pastas renomeadas em 03/09 — ver seção da remediação) |
 
 **Ou seja: o evento existe e chega ao Meta pelo lado servidor (CAPI). O que está mudo é
 exclusivamente o lado navegador.**
@@ -120,9 +120,9 @@ vez por página**, no `<head>`:
 | Página | Linha do `fbq('init', ...)` |
 |---|---|
 | `index.html` | 66 |
-| `sop/index.html` | 71 |
-| `preparo-gestacional/index.html` | 71 |
-| `obstetricia/index.html` | 71 |
+| `v3s/index.html` | 71 |
+| `v4pg/index.html` | 71 |
+| `v2o/index.html` | 71 |
 
 ### ⚠️ Pendência fora do repositório
 
@@ -155,6 +155,68 @@ Como validar um envio bem-sucedido está descrito no `backend/README.md` e no `.
 
 ---
 
+## Remediação de conteúdo e URL — 03/09/2026
+
+Executada a remediação de **conteúdo e URL**, para retirar do site os sinais que
+provavelmente motivaram a classificação de categoria sensível. **Nada de tracking foi
+alterado:** `pixel.js`, `backend/` e a lógica de disparo em `form/formulario.js` seguem
+intocados, e o evento continua se chamando `CompleteRegistration`.
+
+### Mapa de renomeação das pastas
+
+| Antes | Depois | LP |
+|---|---|---|
+| `obstetricia/` | `v2o/` | V2 — Obstetrícia / pré-natal |
+| `sop/` | `v3s/` | V3 — SOP |
+| `preparo-gestacional/` | `v4pg/` | V4 — Preparo gestacional |
+| `/` (raiz) | *(inalterada)* | V1 — Endometriose |
+
+Feito com `git mv`, preservando o histórico. **As URLs antigas deixaram de existir e não há
+redirect** — isso é intencional: o objetivo é que as URLs não revelem mais a condição clínica.
+Quem tiver link antigo salvo receberá 404.
+
+### O que mudou, e por quê
+
+1. **URLs neutras.** O `event_source_url` (que continua sendo `location.href`, sem alteração
+   no código) deixa de carregar o nome da condição em toda requisição enviada ao Meta. A
+   atribuição por LP fica preservada pelos próprios slugs.
+2. **Copy em terceira pessoa.** O problema nunca foi *mencionar* endometriose, SOP ou
+   obstetrícia — isso descreve o serviço e permanece nos `<title>` e no corpo dos textos. O
+   problema era **afirmar que quem está lendo tem a condição** ("a dor que você sente", "seus
+   sintomas", "Tenho SOP", "Você já está grávida"). Todo esse tipo de construção foi reescrito
+   para descrever o serviço, não o leitor.
+3. **Chips de autoidentificação removidos.** Na V4, a lista `Tenho SOP` / `Tenho endometriose`
+   / `Quero engravidar` era o caso mais explícito de autodeclaração de condição de saúde.
+   Substituída por etapas do acompanhamento (`Investigação do casal`, `Ajuste hormonal`,
+   `Apoio nutricional`, `Acompanhamento contínuo`).
+4. **Links de WhatsApp sem a condição.** O parâmetro `text=` dos CTAs não cita mais
+   endometriose, SOP, ovário policístico, pré-natal ou preparo gestacional. Passou a ser
+   `"Olá! Gostaria de agendar uma consulta com o Dr. Guilherme Ângelo. (Vn)"`, onde `Vn` é o
+   código de origem (V1–V4) para a secretária identificar a LP. Antes, a condição vazava para
+   fora do site, no corpo da mensagem enviada ao WhatsApp.
+
+O `data-redirect="https://wa.link/q2fpx1"` do formulário **não mudou** — é encurtado, sem
+parâmetros, já estava limpo.
+
+### Próximo passo — Gabi
+
+**Solicitar reavaliação junto ao suporte do Meta**, depois que a remediação estiver publicada
+em produção. Levar para o chamado:
+
+- O `fbtrace_id` de referência: `A4KmCqaM1IH1lJEzTq0Cc6e`
+- As URLs novas (`/`, `/v2o/`, `/v3s/`, `/v4pg/`), já sem os slugs que citavam condições
+- O argumento de que o site descreve **um serviço médico**, sem inferir nem afirmar condição de
+  saúde de quem visita
+- O pedido de remoção da restrição sobre o evento `CompleteRegistration` para este pixel
+
+⚠️ **Publicar antes de abrir o chamado.** Se o Meta reavaliar as páginas antigas ainda no ar, a
+remediação não conta.
+
+⚠️ Segue valendo: **nenhum contorno técnico**. Não renomear o evento, não criar evento
+customizado, não trocar o canal de envio para escapar da supressão.
+
+---
+
 ## Histórico
 
 | Data | Evento |
@@ -162,6 +224,7 @@ Como validar um envio bem-sucedido está descrito no `backend/README.md` e no `.
 | 02/09/2026 | Diagnóstico completo do fluxo (front → CAPI → Meta). Código de tracking auditado e considerado correto. |
 | 02/09/2026 | Teste em produção: `fbq` manual no console reproduz a supressão. Causa raiz identificada como restrição do lado do Meta. |
 | 02/09/2026 | Commit de observabilidade, limpeza de duplicação e normalização de dados. Lógica de disparo **não alterada**. |
-| — | *(pendente)* Retorno da gestora de tráfego sobre a restrição no Business Manager. |
+| 03/09/2026 | Remediação de conteúdo e URL: pastas renomeadas para `v2o/`, `v3s/`, `v4pg/`; copy reescrita em terceira pessoa nas 4 LPs; chips de autoidentificação removidos; links de WhatsApp neutralizados. Tracking **não alterado**. |
+| — | *(pendente)* Gabi solicitar reavaliação junto ao suporte do Meta, após a publicação da remediação. |
 
 **Até haver retorno da gestora, nada relacionado a tracking deve ser alterado neste repositório.**

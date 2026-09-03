@@ -5,7 +5,7 @@
    Para trocar o canal de agendamento, altere APENAS esta linha.
    ============================================================ */
 
-const LINK_CTA = "https://wa.me/5562998139185?text=Ol%C3%A1!%20Gostaria%20de%20agendar%20uma%20consulta%20sobre%20endometriose%20com%20o%20Dr.%20Guilherme%20%C3%82ngelo.";
+const LINK_CTA = "https://wa.me/5562998139185?text=Ol%C3%A1!%20Gostaria%20de%20agendar%20uma%20consulta%20com%20o%20Dr.%20Guilherme%20%C3%82ngelo.%20(V1)";
 
 (function () {
   "use strict";
