@@ -1,0 +1,348 @@
+/* ============================================================
+   Dr. Guilherme Ângelo · Página /formulario
+   Só retrato + formulário LocalBoost (modo inline).
+   Tokens da marca iguais ao styles.css das LPs.
+   ============================================================ */
+
+:root {
+  --navy: #282E3C;
+  --gold: #D9AF89;
+  --paper: #F4F4F4;
+  --white: #ffffff;
+
+  --navy-70: rgba(40, 46, 60, 0.70);
+  --navy-55: rgba(40, 46, 60, 0.55);
+  --navy-14: rgba(40, 46, 60, 0.14);
+  --navy-06: rgba(40, 46, 60, 0.06);
+  --gold-20: rgba(217, 175, 137, 0.20);
+
+  --navy-deep: #12182c;
+  --navy-glow: #2b3a5e;
+  --gold-light: #ecd4a6;
+  --gold-deep: #b8863f;
+  --gold-ink: #8a6230;   /* dourado escuro com contraste legível sobre o papel */
+
+  --grad-navy: linear-gradient(142deg, var(--navy-deep) 0%, var(--navy) 52%, var(--navy-glow) 100%);
+  --grad-gold: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 46%, var(--gold-deep) 100%);
+
+  --font-head: "Archivo", system-ui, sans-serif;
+  --font-body: "Instrument Sans", system-ui, sans-serif;
+
+  --radius-card: 18px;
+  --radius-field: 12px;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  font-family: var(--font-body);
+  color: var(--navy);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  background:
+    radial-gradient(60% 55% at 15% 10%, rgba(43, 58, 94, 0.65) 0%, rgba(43, 58, 94, 0) 70%),
+    radial-gradient(45% 40% at 90% 95%, rgba(217, 175, 137, 0.12) 0%, rgba(217, 175, 137, 0) 70%),
+    var(--grad-navy);
+  background-attachment: fixed;
+}
+
+img { display: block; max-width: 100%; }
+
+/* ---------- layout ---------- */
+
+.page {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: clamp(1rem, 4vw, 3rem);
+}
+
+.card {
+  width: 100%;
+  max-width: 980px;
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  background: var(--paper);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.06) inset,
+    0 30px 80px -20px rgba(6, 10, 22, 0.65),
+    0 0 0 1px rgba(217, 175, 137, 0.14);
+  animation: rise 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+/* ---------- retrato ---------- */
+
+.card__media {
+  position: relative;
+  margin: 0;
+  min-height: 100%;
+  background: var(--navy);
+}
+
+.card__media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 22%;
+}
+
+/* véu sutil + filete dourado na borda do retrato */
+.card__media::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(180deg, rgba(18, 24, 44, 0) 55%, rgba(18, 24, 44, 0.45) 100%);
+  pointer-events: none;
+}
+.card__media::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 4px;
+  z-index: 2;
+  background: var(--grad-gold);
+}
+
+/* ---------- corpo ---------- */
+
+.card__body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(2rem, 5vw, 3.5rem) clamp(1.5rem, 4.5vw, 3.25rem);
+}
+
+.card__title {
+  position: relative;
+  margin: 0 0 1.75rem;
+  padding-top: 1.1rem;
+  font-family: var(--font-head);
+  font-weight: 800;
+  font-size: clamp(1.45rem, 1.1rem + 1.4vw, 2rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+.card__title::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 44px;
+  height: 3px;
+  border-radius: 3px;
+  background: var(--grad-gold);
+}
+.card__title .accent { color: var(--gold-ink); }
+
+/* ---------- formulário ---------- */
+
+.lead {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.field { position: relative; }
+
+.field__input {
+  width: 100%;
+  height: 58px;
+  padding: 1.35rem 1rem 0.4rem;
+  font: 500 1rem/1.2 var(--font-body);
+  color: var(--navy);
+  background: var(--white);
+  border: 1px solid var(--navy-14);
+  border-radius: var(--radius-field);
+  outline: none;
+  box-shadow: 0 1px 2px var(--navy-06);
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.field__input:hover { border-color: rgba(40, 46, 60, 0.28); }
+.field__input:focus {
+  border-color: var(--gold-deep);
+  box-shadow: 0 0 0 4px var(--gold-20);
+}
+
+/* label flutuante */
+.field__label {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1rem;
+  color: var(--navy-55);
+  pointer-events: none;
+  transform-origin: left center;
+  transition: transform 0.18s ease, color 0.18s ease, top 0.18s ease;
+}
+.field__input:focus + .field__label,
+.field__input:not(:placeholder-shown) + .field__label {
+  top: 0.95rem;
+  transform: translateY(-50%) scale(0.76);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+.field__input:focus + .field__label { color: var(--gold-ink); }
+
+/* autofill do Chrome sem fundo amarelo */
+.field__input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 40px var(--white) inset;
+  -webkit-text-fill-color: var(--navy);
+}
+
+/* botão */
+.lead__submit {
+  margin-top: 0.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+  min-height: 60px;
+  padding: 0.5rem 0.5rem 0.5rem 1.4rem;
+  font: 700 0.95rem/1 var(--font-head);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--paper);
+  background: var(--grad-navy);
+  border: 0;
+  border-radius: var(--radius-field);
+  cursor: pointer;
+  box-shadow: 0 12px 26px -12px rgba(18, 24, 44, 0.8);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
+}
+.lead__submit:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 16px 30px -12px rgba(18, 24, 44, 0.9);
+}
+.lead__submit:active { transform: translateY(0); }
+.lead__submit:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
+}
+
+.lead__submit-icon {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 9px;
+  color: var(--navy-deep);
+  background: var(--grad-gold);
+  transition: transform 0.18s ease;
+}
+.lead__submit-icon svg { width: 24px; height: 24px; }
+.lead__submit:hover .lead__submit-icon { transform: scale(1.05); }
+
+/* estado "enviando" — o formulario.js desabilita o botão durante o envio */
+.lead__submit:disabled {
+  cursor: progress;
+  opacity: 0.75;
+  transform: none;
+}
+.lead__submit:disabled .lead__submit-icon {
+  animation: pulse 1s ease-in-out infinite;
+}
+
+/* ---------- observação ---------- */
+
+/* no DOM a obs vem antes do botão (ordem do mobile); no desktop ela desce para depois dele */
+.note {
+  display: flex;
+  align-items: baseline;
+  gap: 0.85rem;
+  order: 1;
+  margin: 0.75rem 0 0;
+  padding-top: 1.15rem;
+  border-top: 1px solid var(--navy-14);
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: var(--navy-70);
+}
+.note__label {
+  flex: none;
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold-ink);
+}
+
+/* ---------- mobile ---------- */
+
+@media (max-width: 760px) {
+  .page {
+    place-items: start center;
+    padding: 0;
+  }
+  .card {
+    grid-template-columns: 1fr;
+    border-radius: 0;
+    min-height: 100dvh;
+    box-shadow: none;
+  }
+  .card__media {
+    height: clamp(260px, 62vw, 380px);
+    min-height: 0;
+  }
+  .card__media img { object-position: 62% 18%; }
+  .card__media::before {
+    background: linear-gradient(180deg, rgba(244, 244, 244, 0) 60%, var(--paper) 100%);
+  }
+  .card__media::after {
+    top: auto;
+    left: 0;
+    width: auto;
+    height: 0;
+  }
+  .card__body {
+    justify-content: flex-start;
+    margin-top: -1.5rem;
+    position: relative;
+    z-index: 3;
+    padding: 0 1.25rem 2rem;
+  }
+  .card__title {
+    font-size: clamp(1.35rem, 5.6vw, 1.6rem);
+    margin-bottom: 1.4rem;
+  }
+  /* obs acima do botão, visível sem rolar */
+  .note {
+    order: 0;
+    margin: 0.15rem 0 0.1rem;
+    padding-top: 0;
+    border-top: 0;
+  }
+}
+
+/* ---------- movimento ---------- */
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes pulse {
+  50% { transform: scale(0.9); opacity: 0.7; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
